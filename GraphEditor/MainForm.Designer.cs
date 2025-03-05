@@ -50,6 +50,8 @@
             pictureBox.TabIndex = 0;
             pictureBox.TabStop = false;
             pictureBox.Paint += pictureBox_Paint;
+            pictureBox.MouseDown += pictureBox_MouseDown;
+            pictureBox.MouseUp += pictureBox_MouseUp;
             // 
             // drawButton
             // 
