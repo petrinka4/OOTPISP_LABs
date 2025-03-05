@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace Lab1
 {
-    public class BrokenLine : CommonArr
+    public class BrokenLine : CommonArray
     {
         public BrokenLine(Color penColor, int penWidth, Point[] points)
            : base(penColor, penWidth, points) { }

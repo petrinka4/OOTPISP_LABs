@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace Lab1
 {
-    public class Polygon : CommonArr
+    public class Polygon : CommonArray
     {
         public Color BrushColor { get; set; }
 

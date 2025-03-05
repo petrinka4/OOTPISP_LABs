@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Lab1
 {
-    public abstract class CommonArr : Shape
+    public abstract class CommonArray : Shape
     {
         public Point[] Points { get; set; }
 
-        public CommonArr(Color penColor, int penWidth, Point[] points)
+        public CommonArray(Color penColor, int penWidth, Point[] points)
         {
             this.penColor = penColor;
             this.penWidth = penWidth;
