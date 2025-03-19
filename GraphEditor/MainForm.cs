@@ -121,7 +121,7 @@ namespace Lab1
             {
                 case FigureType.Line:
                     CurShape = new Line(Color.Black, 5, new Point(StartX, StartY), new Point(EndX, EndY));
-                    //Array.Resize(ref shapes, shapes.Length + 1);
+                    
                     shapes[^1] = CurShape;
                     pictureBox.Invalidate();
                     break;
@@ -139,19 +139,19 @@ namespace Lab1
                         StartY = EndY;
                         EndY = temp;
                     }
-                    //Array.Resize(ref shapes, shapes.Length + 1);
+                    
                     shapes[^1] = new RectangleF(Color.Red, Color.Orange, 5, new Point(StartX, StartY), EndX - StartX, EndY - StartY);
                     pictureBox.Invalidate();
                     break;
 
                 case FigureType.Ellipse:
-                    //Array.Resize(ref shapes, shapes.Length + 1);
+                    
                     shapes[^1] = new Ellipse(Color.Red, Color.DarkRed, 5, new Point(StartX, StartY), EndX - StartX, EndY - StartY);
                     pictureBox.Invalidate();
                     break;
 
                 case FigureType.Polygon:
-                    //Array.Resize(ref shapes, shapes.Length + 1);
+                    
                     Point[] pointsPolygon = new Point[]
                     {
                         new Point((EndX + StartX) / 2, StartY),
@@ -165,7 +165,7 @@ namespace Lab1
                     break;
 
                 case FigureType.BrLine:
-                    //Array.Resize(ref shapes, shapes.Length + 1);
+                    
                     Point newPoint = new Point(EndX, EndY);
                     pointsBrLine[^1] = newPoint;
 
