@@ -1,4 +1,5 @@
 ﻿using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Lab1
 {
@@ -12,8 +13,12 @@ namespace Lab1
         BrLine
     }
 
+
     public partial class MainForm : Form
     {
+        public Color colorLine = Color.White;
+        public Color colorBack = Color.White;
+        public int penWidth = 10;
         private FigureType _curFigure;
         private FigureType CurFigure
         {
@@ -32,8 +37,9 @@ namespace Lab1
         int StartX, StartY, EndX, EndY;
         Shape CurShape = new Line(Color.Black, 5, new Point(20, 20), new Point(40, 100));
         Point[] pointsBrLine = new Point[0];
+        List<Shape> stack = new List<Shape>();
         bool IsDrawing;
-        bool IsDrawingBrLine=false;
+        bool IsDrawingBrLine = false;
         public MainForm()
         {
             InitializeComponent();
@@ -97,16 +103,16 @@ namespace Lab1
                 newArray[newArray.Length - 1] = newPoint;
                 pointsBrLine = newArray;
             }
-            if (CurFigure!=FigureType.None)
+            if (CurFigure != FigureType.None)
             {
                 IsDrawing = true;
                 Array.Resize(ref shapes, shapes.Length + 1);
             }
-            if(CurFigure==FigureType.BrLine )
+            if (CurFigure == FigureType.BrLine)
             {
                 Point[] newArray = new Point[pointsBrLine.Length + 1];
                 Array.Copy(pointsBrLine, newArray, pointsBrLine.Length);
-                
+
                 pointsBrLine = newArray;
             }
         }
@@ -120,8 +126,8 @@ namespace Lab1
             switch (CurFigure)
             {
                 case FigureType.Line:
-                    CurShape = new Line(Color.Black, 5, new Point(StartX, StartY), new Point(EndX, EndY));
-                    
+                    CurShape = new Line(colorLine, penWidth, new Point(StartX, StartY), new Point(EndX, EndY));
+
                     shapes[^1] = CurShape;
                     pictureBox.Invalidate();
                     break;
@@ -139,19 +145,19 @@ namespace Lab1
                         StartY = EndY;
                         EndY = temp;
                     }
-                    
-                    shapes[^1] = new RectangleF(Color.Red, Color.Orange, 5, new Point(StartX, StartY), EndX - StartX, EndY - StartY);
+
+                    shapes[^1] = new RectangleF(colorLine, colorBack, penWidth, new Point(StartX, StartY), EndX - StartX, EndY - StartY);
                     pictureBox.Invalidate();
                     break;
 
                 case FigureType.Ellipse:
-                    
-                    shapes[^1] = new Ellipse(Color.Red, Color.DarkRed, 5, new Point(StartX, StartY), EndX - StartX, EndY - StartY);
+
+                    shapes[^1] = new Ellipse(colorLine, colorBack, penWidth, new Point(StartX, StartY), EndX - StartX, EndY - StartY);
                     pictureBox.Invalidate();
                     break;
 
                 case FigureType.Polygon:
-                    
+
                     Point[] pointsPolygon = new Point[]
                     {
                         new Point((EndX + StartX) / 2, StartY),
@@ -160,16 +166,16 @@ namespace Lab1
                         new Point(StartX + (EndX - StartX) * 2 / 10, EndY),
                         new Point(StartX, StartY + (EndY - StartY) * 4 / 10)
                     };
-                    shapes[^1] = new Polygon(Color.Green, Color.Lime, 5, pointsPolygon);
+                    shapes[^1] = new Polygon(colorLine, colorBack, penWidth, pointsPolygon);
                     pictureBox.Invalidate();
                     break;
 
                 case FigureType.BrLine:
-                    
+
                     Point newPoint = new Point(EndX, EndY);
                     pointsBrLine[^1] = newPoint;
 
-                    shapes[^1] = new BrokenLine(Color.Red, 5, pointsBrLine);
+                    shapes[^1] = new BrokenLine(colorLine, penWidth, pointsBrLine);
                     pictureBox.Invalidate();
                     break;
             }
@@ -182,19 +188,19 @@ namespace Lab1
                 int temp;
                 EndX = e.X;
                 EndY = e.Y;
-                
+
                 switch (CurFigure)
                 {
                     case FigureType.Line:
-                        CurShape = new Line(Color.Black, 5, new Point(StartX, StartY), new Point(EndX, EndY));
+                        CurShape = new Line(colorLine, penWidth, new Point(StartX, StartY), new Point(EndX, EndY));
 
                         shapes[^1] = CurShape;
                         pictureBox.Invalidate();
                         break;
 
                     case FigureType.Rectangle:
-                        bool isRotateX=false;
-                        bool isRotateY=false;
+                        bool isRotateX = false;
+                        bool isRotateY = false;
                         if (StartX > EndX)
                         {
                             temp = StartX;
@@ -211,7 +217,7 @@ namespace Lab1
                             isRotateY = true;
                         }
 
-                        shapes[^1] = new RectangleF(Color.Red, Color.Orange, 5, new Point(StartX, StartY), EndX - StartX, EndY - StartY);
+                        shapes[^1] = new RectangleF(colorLine, colorBack, penWidth, new Point(StartX, StartY), EndX - StartX, EndY - StartY);
                         pictureBox.Invalidate();
                         if (isRotateX)
                         {
@@ -231,7 +237,7 @@ namespace Lab1
 
                     case FigureType.Ellipse:
 
-                        shapes[^1] = new Ellipse(Color.Red, Color.DarkRed, 5, new Point(StartX, StartY), EndX - StartX, EndY - StartY);
+                        shapes[^1] = new Ellipse(colorLine, colorBack, penWidth, new Point(StartX, StartY), EndX - StartX, EndY - StartY);
                         pictureBox.Invalidate();
                         break;
 
@@ -245,7 +251,7 @@ namespace Lab1
                         new Point(StartX + (EndX - StartX) * 2 / 10, EndY),
                         new Point(StartX, StartY + (EndY - StartY) * 4 / 10)
                         };
-                        shapes[^1] = new Polygon(Color.Green, Color.Lime, 5, pointsPolygon);
+                        shapes[^1] = new Polygon(colorLine, colorBack, penWidth, pointsPolygon);
                         pictureBox.Invalidate();
                         break;
 
@@ -253,11 +259,61 @@ namespace Lab1
 
                         Point newPoint = new Point(EndX, EndY);
                         pointsBrLine[^1] = newPoint;
-                        
-                        shapes[^1] = new BrokenLine(Color.Red, 5, pointsBrLine);
+
+                        shapes[^1] = new BrokenLine(colorLine, penWidth, pointsBrLine);
                         pictureBox.Invalidate();
                         break;
                 }
+            }
+        }
+
+        private void buttonColor_Click(object sender, EventArgs e)
+        {
+            ColorDialog MyDialog = new ColorDialog();
+            MyDialog.AllowFullOpen = false;
+            MyDialog.ShowHelp = true;
+            MyDialog.Color = colorLine;
+            if (MyDialog.ShowDialog() == DialogResult.OK)
+                colorLine = MyDialog.Color;
+            buttonColorLine.BackColor = MyDialog.Color;
+        }
+
+        private void buttonColorBack_Click(object sender, EventArgs e)
+        {
+            ColorDialog MyDialog = new ColorDialog();
+            MyDialog.AllowFullOpen = false;
+            MyDialog.ShowHelp = true;
+            MyDialog.Color = colorBack;
+            if (MyDialog.ShowDialog() == DialogResult.OK)
+                colorBack = MyDialog.Color;
+            buttonColorBack.BackColor = MyDialog.Color;
+        }
+
+        private void trackBarWidth_Scroll(object sender, EventArgs e)
+        {
+            penWidth = trackBarWidth.Value;
+        }
+
+        private void buttonCtrlZ_Click(object sender, EventArgs e)
+        {
+            if (shapes.Length > 0)
+            {
+                stack.Insert(0, shapes[^1]);
+                Array.Resize(ref shapes, shapes.Length - 1);
+                pictureBox.Invalidate();
+            }
+
+        }
+
+        private void buttonCtrlY_Click(object sender, EventArgs e)
+        {
+            if (stack.Count > 0)
+            {
+                Shape lastDeleted = stack[0];
+                stack.RemoveAt(0);
+                Array.Resize(ref shapes, shapes.Length + 1);
+                shapes[^1] = lastDeleted;
+                pictureBox.Invalidate();
             }
         }
     }

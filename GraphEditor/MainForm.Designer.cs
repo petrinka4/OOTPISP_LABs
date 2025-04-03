@@ -36,7 +36,14 @@
             buttonEllipse = new Button();
             buttonPolygon = new Button();
             buttonBrLine = new Button();
+            colorDialog1 = new ColorDialog();
+            buttonColorLine = new Button();
+            buttonColorBack = new Button();
+            trackBarWidth = new TrackBar();
+            buttonCtrlZ = new Button();
+            buttonCtrlY = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)trackBarWidth).BeginInit();
             SuspendLayout();
             // 
             // pictureBox
@@ -80,7 +87,7 @@
             // 
             // buttonLine
             // 
-            buttonLine.Location = new Point(66, 35);
+            buttonLine.Location = new Point(12, 12);
             buttonLine.Name = "buttonLine";
             buttonLine.Size = new Size(94, 29);
             buttonLine.TabIndex = 4;
@@ -90,7 +97,7 @@
             // 
             // buttonRectangle
             // 
-            buttonRectangle.Location = new Point(206, 35);
+            buttonRectangle.Location = new Point(112, 36);
             buttonRectangle.Name = "buttonRectangle";
             buttonRectangle.Size = new Size(111, 29);
             buttonRectangle.TabIndex = 5;
@@ -100,7 +107,7 @@
             // 
             // buttonEllipse
             // 
-            buttonEllipse.Location = new Point(367, 35);
+            buttonEllipse.Location = new Point(229, 12);
             buttonEllipse.Name = "buttonEllipse";
             buttonEllipse.Size = new Size(94, 29);
             buttonEllipse.TabIndex = 6;
@@ -110,7 +117,7 @@
             // 
             // buttonPolygon
             // 
-            buttonPolygon.Location = new Point(524, 35);
+            buttonPolygon.Location = new Point(329, 36);
             buttonPolygon.Name = "buttonPolygon";
             buttonPolygon.Size = new Size(94, 29);
             buttonPolygon.TabIndex = 7;
@@ -120,7 +127,7 @@
             // 
             // buttonBrLine
             // 
-            buttonBrLine.Location = new Point(680, 35);
+            buttonBrLine.Location = new Point(429, 12);
             buttonBrLine.Name = "buttonBrLine";
             buttonBrLine.Size = new Size(94, 29);
             buttonBrLine.TabIndex = 8;
@@ -128,11 +135,67 @@
             buttonBrLine.UseVisualStyleBackColor = true;
             buttonBrLine.Click += buttonBrLine_Click;
             // 
+            // colorDialog1
+            // 
+            colorDialog1.Color = Color.White;
+            // 
+            // buttonColorLine
+            // 
+            buttonColorLine.Location = new Point(671, 12);
+            buttonColorLine.Name = "buttonColorLine";
+            buttonColorLine.Size = new Size(37, 37);
+            buttonColorLine.TabIndex = 9;
+            buttonColorLine.UseVisualStyleBackColor = true;
+            buttonColorLine.Click += buttonColor_Click;
+            // 
+            // buttonColorBack
+            // 
+            buttonColorBack.Location = new Point(714, 12);
+            buttonColorBack.Name = "buttonColorBack";
+            buttonColorBack.Size = new Size(37, 37);
+            buttonColorBack.TabIndex = 10;
+            buttonColorBack.UseVisualStyleBackColor = true;
+            buttonColorBack.Click += buttonColorBack_Click;
+            // 
+            // trackBarWidth
+            // 
+            trackBarWidth.Location = new Point(757, 9);
+            trackBarWidth.Maximum = 100;
+            trackBarWidth.Name = "trackBarWidth";
+            trackBarWidth.Size = new Size(130, 56);
+            trackBarWidth.TabIndex = 11;
+            trackBarWidth.Scroll += trackBarWidth_Scroll;
+            // 
+            // buttonCtrlZ
+            // 
+            buttonCtrlZ.Location = new Point(893, 36);
+            buttonCtrlZ.Name = "buttonCtrlZ";
+            buttonCtrlZ.Size = new Size(34, 29);
+            buttonCtrlZ.TabIndex = 12;
+            buttonCtrlZ.Text = "<-";
+            buttonCtrlZ.UseVisualStyleBackColor = true;
+            buttonCtrlZ.Click += buttonCtrlZ_Click;
+            // 
+            // buttonCtrlY
+            // 
+            buttonCtrlY.Location = new Point(933, 36);
+            buttonCtrlY.Name = "buttonCtrlY";
+            buttonCtrlY.Size = new Size(34, 29);
+            buttonCtrlY.TabIndex = 13;
+            buttonCtrlY.Text = "->";
+            buttonCtrlY.UseVisualStyleBackColor = true;
+            buttonCtrlY.Click += buttonCtrlY_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(972, 543);
+            Controls.Add(buttonCtrlY);
+            Controls.Add(buttonCtrlZ);
+            Controls.Add(trackBarWidth);
+            Controls.Add(buttonColorBack);
+            Controls.Add(buttonColorLine);
             Controls.Add(buttonBrLine);
             Controls.Add(buttonPolygon);
             Controls.Add(buttonEllipse);
@@ -147,7 +210,9 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "MainForm";
             ((System.ComponentModel.ISupportInitialize)pictureBox).EndInit();
+            ((System.ComponentModel.ISupportInitialize)trackBarWidth).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -160,5 +225,11 @@
         private Button buttonEllipse;
         private Button buttonPolygon;
         private Button buttonBrLine;
+        private ColorDialog colorDialog1;
+        private Button buttonColorLine;
+        private Button buttonColorBack;
+        private TrackBar trackBarWidth;
+        private Button buttonCtrlZ;
+        private Button buttonCtrlY;
     }
 }
