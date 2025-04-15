@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Drawing;
 
 namespace Lab1
 {
     public abstract class CommonArray : Shape
     {
+        protected Color penColor;
+        protected int penWidth;
         public Point[] Points { get; set; }
 
         public CommonArray(Color penColor, int penWidth, Point[] points)
