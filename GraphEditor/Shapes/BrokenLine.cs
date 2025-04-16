@@ -5,8 +5,8 @@ namespace Lab1
 {
     public class BrokenLine : CommonArray
     {
-        public BrokenLine(Color penColor, int penWidth, Point[] points)
-           : base(penColor, penWidth, points) { }
+        public BrokenLine(Color penColor,Color brushColor, int penWidth, Point[] points)
+           : base(penColor,brushColor, penWidth, points) { }
 
        
         public void AddPoint(Point point)
@@ -14,6 +14,13 @@ namespace Lab1
             var pointList = Points.ToList(); 
             pointList.Add(point);
             Points = pointList.ToArray(); 
+        }
+
+        public void DeleteLast()
+        {
+            var pointList = Points.ToList();
+            pointList.RemoveAt(pointList.Count() - 1);
+            Points = pointList.ToArray();
         }
 
         public override void Draw(Graphics g)

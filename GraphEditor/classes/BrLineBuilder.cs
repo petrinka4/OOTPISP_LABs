@@ -12,7 +12,7 @@ namespace Lab1.classes
         {
             if (brokenLine == null)
             {
-                brokenLine = new BrokenLine(lineColor, penWidth, new Point[] { start });
+                brokenLine = new BrokenLine(lineColor,backColor, penWidth, new Point[] { start });
                 Array.Resize(ref shapes, shapes.Length + 1);
                 shapes[shapes.Length - 1] = brokenLine;
             }
@@ -24,7 +24,8 @@ namespace Lab1.classes
        
             if (brokenLine != null)
             {
-               // brokenLine.AddPoint(current);
+                brokenLine.DeleteLast();
+                brokenLine.AddPoint(current);
             }
         }
 
@@ -33,6 +34,7 @@ namespace Lab1.classes
             
             if (brokenLine != null)
             {
+                brokenLine.AddPoint(end);
                 brokenLine.AddPoint(end);
             }
         }

@@ -13,7 +13,7 @@ namespace Lab1.classes
            
             if (polygon == null)
             {
-                polygon = new Polygon(lineColor, penWidth, new Point[] { start });
+                polygon = new Polygon(lineColor,backColor, penWidth, new Point[] { start });
                 Array.Resize(ref shapes, shapes.Length + 1);
                 shapes[shapes.Length - 1] = polygon;
             }
@@ -24,7 +24,8 @@ namespace Lab1.classes
            
             if (polygon != null)
             {
-                //polygon.AddPoint(current);
+                polygon.DeleteLast();
+                polygon.AddPoint(current);
             }
         }
 

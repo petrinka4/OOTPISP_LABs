@@ -6,16 +6,17 @@ namespace Lab1
 {
     public class Polygon : CommonArray
     {
-        public Polygon(Color penColor, int penWidth, Point[] points)
-           : base(penColor, penWidth, points) { }
+        public Polygon(Color penColor,Color brushColor, int penWidth, Point[] points)
+           : base(penColor, brushColor, penWidth, points) { }
 
-    
+        
         public void AddPoint(Point point)
         {
             var pointList = Points.ToList(); 
             pointList.Add(point);
             Points = pointList.ToArray();
         }
+        
         public void DeleteLast()
         {
           
@@ -42,8 +43,12 @@ namespace Lab1
            
             if (Points.Length >= 3)
             {
+                
+                using (var brush = new SolidBrush(brushColor))
                 using (var pen = new Pen(penColor, penWidth))
                 {
+                    
+                    g.FillPolygon(brush, Points);
                     g.DrawPolygon(pen, Points);
                 }
             }
