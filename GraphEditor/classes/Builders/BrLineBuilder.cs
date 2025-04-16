@@ -39,17 +39,14 @@ namespace Lab1.classes.Builders
                 brokenLine.AddPoint(end);
             }
         }
+       
         public bool GetSelf()
         {
-            if (brokenLine == null)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            
+                return brokenLine!=null;
+            
         }
+        //GC создан не для того что бы на него смотрели и любовались)
         public void Clear()
         {
            brokenLine=null;

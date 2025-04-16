@@ -4,14 +4,15 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Reflection.PortableExecutable;
 
 namespace Lab1
 {
     public partial class MainForm : Form
     {
         private UndoRendoManager undoRedoManager = new UndoRendoManager();
-        private Dictionary<FigureType, IFigureBuilder> figureBuilders;
-        private IFigureBuilder activeBuilder;
+        private FigureBuilderManager figureBuilderManager = new FigureBuilderManager();
+        private Dictionary<int, IFigureBuilder> figureBuilders;
 
         public Color colorLine = Color.White;
         public Color colorBack = Color.White;
@@ -28,14 +29,7 @@ namespace Lab1
 
         private void InitializeBuilders()
         {
-            figureBuilders = new Dictionary<FigureType, IFigureBuilder>
-            {
-                { FigureType.Line, new LineBuilder() },
-                { FigureType.Rectangle, new RectangleBuilder() },
-                { FigureType.Ellipse, new EllipseBuilder() },
-                { FigureType.Polygon, new PolygonBuilder() },
-                { FigureType.BrLine, new BrLineBuilder() }
-            };
+           
         }
 
         private void drawButton_Click(object sender, EventArgs e)
@@ -54,59 +48,57 @@ namespace Lab1
         private void clearButton_Click(object sender, EventArgs e)
         {
             shapes = Array.Empty<Shape>();
-            activeBuilder = null;
+            
             undoRedoManager.ClearShapes();
             pictureBox.Invalidate();
         }
 
-        private void buttonLine_Click(object sender, EventArgs e) => SetActiveBuilder(FigureType.Line);
-        private void buttonRectangle_Click(object sender, EventArgs e) => SetActiveBuilder(FigureType.Rectangle);
-        private void buttonEllipse_Click(object sender, EventArgs e) => SetActiveBuilder(FigureType.Ellipse);
-        private void buttonPolygon_Click(object sender, EventArgs e) { SetActiveBuilder(FigureType.Polygon);
+        private void buttonLine_Click(object sender, EventArgs e) => figureBuilderManager.SetFigure(0);
+        private void buttonRectangle_Click(object sender, EventArgs e) => figureBuilderManager.SetFigure(1);
+        private void buttonEllipse_Click(object sender, EventArgs e) => figureBuilderManager.SetFigure(2);
+        private void buttonPolygon_Click(object sender, EventArgs e) { figureBuilderManager.SetFigure(3);
+            IFigureBuilder activeBuilder = figureBuilderManager.GetBuilder();
             if (activeBuilder.GetSelf() == true)
             {
-                
+
                 activeBuilder.Clear();
             }
         }
-        private void buttonBrLine_Click(object sender, EventArgs e) { SetActiveBuilder(FigureType.BrLine);
+        private void buttonBrLine_Click(object sender, EventArgs e) { figureBuilderManager.SetFigure(4);
+            IFigureBuilder activeBuilder = figureBuilderManager.GetBuilder();
             if (activeBuilder.GetSelf() == true)
             {
-                
+
                 activeBuilder.Clear();
             }
         }
 
-        private void SetActiveBuilder(FigureType figure)
-        {
-            activeBuilder = figureBuilders.ContainsKey(figure) ? figureBuilders[figure] : null;
-        }
+        
 
         private void pictureBox_MouseDown(object sender, MouseEventArgs e)
         {
-            if (activeBuilder == null) return;
-            
+                   
             IsDrawing = true;
             undoRedoManager.ClearShapes();
-            activeBuilder.OnMouseDown(new Point(e.X, e.Y), ref shapes, colorLine, colorBack, penWidth);
+            figureBuilderManager.HandleMouseDown(new Point(e.X, e.Y), ref shapes, colorLine, colorBack, penWidth);
             pictureBox.Invalidate();
         }
 
         private void pictureBox_MouseMove(object sender, MouseEventArgs e)
         {
-            if (IsDrawing && activeBuilder != null)
+            if (IsDrawing)
             {
-                activeBuilder.OnMouseMove(new Point(e.X, e.Y), ref shapes);
+                figureBuilderManager.HandleMouseMove(new Point(e.X, e.Y), ref shapes);
                 pictureBox.Invalidate();
             }
         }
 
         private void pictureBox_MouseUp(object sender, MouseEventArgs e)
         {
-            if (IsDrawing && activeBuilder != null)
+            if (IsDrawing)
             {
                 IsDrawing = false;
-                activeBuilder.OnMouseUp(new Point(e.X, e.Y), ref shapes);
+                figureBuilderManager.HandleMouseUp(new Point(e.X, e.Y), ref shapes);
                 pictureBox.Invalidate();
             }
         }
