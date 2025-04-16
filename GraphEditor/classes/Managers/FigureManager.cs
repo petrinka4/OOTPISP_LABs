@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Drawing;
 using System.Collections.Generic;
-using Lab1.classes;
+using Lab1.classes.Builders;
 
-namespace Lab1.classes
+namespace Lab1.classes.Managers
 {
     public class FigureBuilderManager
     {

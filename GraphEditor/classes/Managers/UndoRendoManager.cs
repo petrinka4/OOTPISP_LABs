@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Lab1;
+using System;
 using System.Collections.Generic;
 
-namespace Lab1.classes
+namespace Lab1.classes.Managers
 {
     class UndoRendoManager
     {

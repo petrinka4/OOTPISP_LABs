@@ -1,9 +1,10 @@
-﻿using Lab1.classes;
+﻿using Lab1.classes.Managers;
+using Lab1;
 using System.Drawing;
 
-namespace Lab1.classes
+namespace Lab1.classes.Builders
 {
-    public class EllipseBuilder : IFigureBuilder
+    public class RectangleBuilder : IFigureBuilder
     {
         private Point start;
         private Color lineColor, fillColor;
@@ -13,10 +14,10 @@ namespace Lab1.classes
         {
             this.start = start;
             this.lineColor = lineColor;
-            this.fillColor = backColor;
+            fillColor = backColor;
             this.penWidth = penWidth;
             Array.Resize(ref shapes, shapes.Length + 1);
-            shapes[^1] = new Ellipse(lineColor, backColor, penWidth, start, 0, 0);
+            shapes[^1] = new RectangleF(lineColor, backColor, penWidth, start, 0, 0);
         }
 
         public void OnMouseMove(Point current, ref Shape[] shapes)
@@ -25,7 +26,7 @@ namespace Lab1.classes
             int width = Math.Abs(current.X - start.X);
             int height = Math.Abs(current.Y - start.Y);
 
-            shapes[^1] = new Ellipse(lineColor, fillColor, penWidth, topLeft, width, height);
+            shapes[^1] = new RectangleF(lineColor, fillColor, penWidth, topLeft, width, height);
         }
 
         public void OnMouseUp(Point end, ref Shape[] shapes)
@@ -38,7 +39,7 @@ namespace Lab1.classes
         }
         public void Clear()
         {
-           
+
         }
     }
 }

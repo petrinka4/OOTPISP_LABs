@@ -1,4 +1,5 @@
-﻿using Lab1.classes;
+﻿using Lab1.classes.Managers;
+using Lab1.classes.Builders;
 using System;
 using System.Collections.Generic;
 using System.Drawing;

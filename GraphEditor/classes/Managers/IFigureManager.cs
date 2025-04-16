@@ -1,6 +1,7 @@
-﻿using System.Drawing;
+﻿using Lab1;
+using System.Drawing;
 
-namespace Lab1.classes
+namespace Lab1.classes.Managers
 {
     public interface IFigureBuilder
     {

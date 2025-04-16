@@ -1,8 +1,9 @@
-﻿using Lab1.classes;
+﻿using Lab1.classes.Managers;
+using Lab1;
 using System;
 using System.Drawing;
 
-namespace Lab1.classes
+namespace Lab1.classes.Builders
 {
     public class BrLineBuilder : IFigureBuilder
     {
