@@ -64,14 +64,14 @@ namespace Lab1
         private void buttonPolygon_Click(object sender, EventArgs e) { SetActiveBuilder(FigureType.Polygon);
             if (activeBuilder.GetSelf() == true)
             {
-                // Завершаем текущую ломаную линию (если нужно, можно добавить логику для завершения)
+                
                 activeBuilder.Clear();
             }
         }
         private void buttonBrLine_Click(object sender, EventArgs e) { SetActiveBuilder(FigureType.BrLine);
             if (activeBuilder.GetSelf() == true)
             {
-                // Завершаем текущую ломаную линию (если нужно, можно добавить логику для завершения)
+                
                 activeBuilder.Clear();
             }
         }
@@ -86,6 +86,7 @@ namespace Lab1
             if (activeBuilder == null) return;
             
             IsDrawing = true;
+            undoRedoManager.ClearShapes();
             activeBuilder.OnMouseDown(new Point(e.X, e.Y), ref shapes, colorLine, colorBack, penWidth);
             pictureBox.Invalidate();
         }

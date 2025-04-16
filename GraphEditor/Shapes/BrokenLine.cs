@@ -8,22 +8,22 @@ namespace Lab1
         public BrokenLine(Color penColor, int penWidth, Point[] points)
            : base(penColor, penWidth, points) { }
 
-        // Метод для добавления точки в массив
+       
         public void AddPoint(Point point)
         {
-            var pointList = Points.ToList();  // Преобразуем в список для добавления
+            var pointList = Points.ToList(); 
             pointList.Add(point);
-            Points = pointList.ToArray(); // Преобразуем обратно в массив
+            Points = pointList.ToArray(); 
         }
 
         public override void Draw(Graphics g)
         {
-            // Проверяем, что количество точек больше или равно 2
+          
             if (Points.Length >= 2)
             {
                 using (var pen = new Pen(penColor, penWidth))
                 {
-                    g.DrawLines(pen, Points); // Рисуем ломаную линию
+                    g.DrawLines(pen, Points);
                 }
             }
         }
