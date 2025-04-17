@@ -58,18 +58,18 @@ namespace Lab1
         private void buttonEllipse_Click(object sender, EventArgs e) => figureBuilderManager.SetFigure(2);
         private void buttonPolygon_Click(object sender, EventArgs e) { figureBuilderManager.SetFigure(3);
             IFigureBuilder activeBuilder = figureBuilderManager.GetBuilder();
-            if (activeBuilder.GetSelf() == true)
+            if (activeBuilder.isCreated == true)
             {
 
-                activeBuilder.Clear();
+                activeBuilder.isCreated=false;
             }
         }
         private void buttonBrLine_Click(object sender, EventArgs e) { figureBuilderManager.SetFigure(4);
             IFigureBuilder activeBuilder = figureBuilderManager.GetBuilder();
-            if (activeBuilder.GetSelf() == true)
+            if (activeBuilder.isCreated == true)
             {
 
-                activeBuilder.Clear();
+                activeBuilder.isCreated = false;
             }
         }
 

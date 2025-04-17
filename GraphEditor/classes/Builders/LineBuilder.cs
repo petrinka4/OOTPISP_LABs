@@ -6,6 +6,7 @@ namespace Lab1.classes.Builders
 {
     public class LineBuilder : IFigureBuilder
     {
+        public bool isCreated { get; set; } = false;
         private Point start;
         private Color color;
         private int width;
@@ -28,13 +29,6 @@ namespace Lab1.classes.Builders
         {
             shapes[^1] = new Line(color, width, start, end);
         }
-        public bool GetSelf()
-        {
-            return false;
-        }
-        public void Clear()
-        {
-
-        }
+        
     }
 }

@@ -7,7 +7,8 @@ namespace Lab1.classes.Builders
 {
     public class PolygonBuilder : IFigureBuilder
     {
-        private bool isCreated = false;
+        public bool isCreated { get; set; } = false;
+        
         private Polygon polygon;
 
         public void OnMouseDown(Point start, ref Shape[] shapes, Color lineColor, Color backColor, int penWidth)
@@ -43,14 +44,6 @@ namespace Lab1.classes.Builders
             }
         }
 
-        public bool GetSelf()
-        {
-            return isCreated;  
-        }
-
-        public void Clear()
-        {
-            isCreated = false;
-        }
+        
     }
 }

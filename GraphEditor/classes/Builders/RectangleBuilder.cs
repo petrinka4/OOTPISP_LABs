@@ -6,6 +6,7 @@ namespace Lab1.classes.Builders
 {
     public class RectangleBuilder : IFigureBuilder
     {
+        public bool isCreated { get; set; } = false;
         private Point start;
         private Color lineColor, fillColor;
         private int penWidth;
@@ -33,13 +34,6 @@ namespace Lab1.classes.Builders
         {
             OnMouseMove(end, ref shapes);
         }
-        public bool GetSelf()
-        {
-            return false;
-        }
-        public void Clear()
-        {
-
-        }
+        
     }
 }

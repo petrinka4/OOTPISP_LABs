@@ -20,8 +20,7 @@ namespace Lab1.classes.Managers
                     { 3, new PolygonBuilder() },
                     { 4, new BrLineBuilder() }
                 };
-            //// Пример добавления нового элемента с индексом = текущий размер + 1
-            //figureBuilders.Add(figureBuilders.Count, new NewPluginBuilder());
+            
         
         }
 
