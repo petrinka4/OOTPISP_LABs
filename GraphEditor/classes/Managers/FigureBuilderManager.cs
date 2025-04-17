@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Collections.Generic;
 using Lab1.classes.Builders;
+using Lab1.classes.Builders.Interfaces;
 
 namespace Lab1.classes.Managers
 {

@@ -1,7 +1,7 @@
-﻿using Lab1.classes.Managers;
-using Lab1;
+﻿using Lab1;
 using System;
 using System.Drawing;
+using Lab1.classes.Builders.Interfaces;
 
 namespace Lab1.classes.Builders
 {

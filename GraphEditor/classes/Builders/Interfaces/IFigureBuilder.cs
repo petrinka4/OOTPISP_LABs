@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Drawing.Printing;
 
-namespace Lab1.classes.Managers
+namespace Lab1.classes.Builders.Interfaces
 {
     public interface IFigureBuilder
     {
