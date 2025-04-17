@@ -7,13 +7,15 @@ namespace Lab1.classes.Builders
 {
     public class PolygonBuilder : IFigureBuilder
     {
+        private bool isCreated = false;
         private Polygon polygon;
 
         public void OnMouseDown(Point start, ref Shape[] shapes, Color lineColor, Color backColor, int penWidth)
         {
            
-            if (polygon == null)
+            if (!isCreated)
             {
+                isCreated = true;
                 polygon = new Polygon(lineColor,backColor, penWidth, new Point[] { start });
                 Array.Resize(ref shapes, shapes.Length + 1);
                 shapes[shapes.Length - 1] = polygon;
@@ -43,12 +45,12 @@ namespace Lab1.classes.Builders
 
         public bool GetSelf()
         {
-            return polygon != null;  
+            return isCreated;  
         }
 
         public void Clear()
         {
-            polygon = null;  
+            isCreated = false;
         }
     }
 }

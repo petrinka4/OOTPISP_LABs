@@ -7,12 +7,14 @@ namespace Lab1.classes.Builders
 {
     public class BrLineBuilder : IFigureBuilder
     {
+        private bool isCreated=false;
         private BrokenLine brokenLine;
 
         public void OnMouseDown(Point start, ref Shape[] shapes, Color lineColor, Color backColor, int penWidth)
         {
-            if (brokenLine == null)
+            if (!isCreated)
             {
+                isCreated = true;
                 brokenLine = new BrokenLine(lineColor,backColor, penWidth, new Point[] { start });
                 Array.Resize(ref shapes, shapes.Length + 1);
                 shapes[shapes.Length - 1] = brokenLine;
@@ -43,13 +45,13 @@ namespace Lab1.classes.Builders
         public bool GetSelf()
         {
             
-                return brokenLine!=null;
+                return isCreated;
             
         }
-        //GC создан не для того что бы на него смотрели и любовались)
+        
         public void Clear()
         {
-           brokenLine=null;
+            isCreated = false;
         }
     }
 }
