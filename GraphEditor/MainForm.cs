@@ -30,7 +30,13 @@ namespace Lab1
 
         private void InitializeBuilders()
         {
-           
+            figureBuilderManager.RegisterBuilder(0, new LineBuilder());       
+            figureBuilderManager.RegisterBuilder(1, new RectangleBuilder());  
+            figureBuilderManager.RegisterBuilder(2, new EllipseBuilder());   
+            figureBuilderManager.RegisterBuilder(3, new PolygonBuilder());   
+            figureBuilderManager.RegisterBuilder(4, new BrLineBuilder());
+            figureBuilderManager.LoadAllPlugins();
+            
         }
 
         private void drawButton_Click(object sender, EventArgs e)

@@ -3,6 +3,8 @@ using System.Drawing;
 using System.Collections.Generic;
 using Lab1.classes.Builders;
 using Lab1.classes.Builders.Interfaces;
+using System.Reflection;
+using System.Diagnostics;
 
 namespace Lab1.classes.Managers
 {
@@ -11,20 +13,12 @@ namespace Lab1.classes.Managers
         private readonly Dictionary<int, IFigureBuilder> builders;
         private IFigureBuilder currentBuilder;
 
+
         public FigureBuilderManager()
         {
-            builders = new Dictionary<int, IFigureBuilder>
-                {
-                    { 0, new LineBuilder() },
-                    { 1, new RectangleBuilder() },
-                    { 2, new EllipseBuilder() },
-                    { 3, new PolygonBuilder() },
-                    { 4, new BrLineBuilder() }
-                };
+            builders = new Dictionary<int, IFigureBuilder>();
             
-        
         }
-
         public int GetDictSize()
         {
             return builders.Count();
@@ -33,10 +27,51 @@ namespace Lab1.classes.Managers
         {
             return currentBuilder;
         }
+        public void RegisterBuilder(int index, IFigureBuilder builder)
+        {
+            builders[index] = builder;
+        }
+
         public void SetFigure(int index)
         {
-            currentBuilder = builders.ContainsKey(index) ? builders[index] : null;
+            currentBuilder = builders.TryGetValue(index, out var builder) ? builder : null;
         }
+
+        public void LoadAllPlugins()
+        {
+            string pluginsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Plugins");
+
+            if (!Directory.Exists(pluginsPath))
+            {
+                Directory.CreateDirectory(pluginsPath); // Создаем папку, если её нет
+                return;
+            }
+
+            foreach (var dll in Directory.GetFiles(pluginsPath, "*.dll"))
+            {
+                try
+                {
+                    var assembly = Assembly.LoadFrom(dll);
+                    var builderTypes = assembly.GetTypes()
+                        .Where(t => typeof(IFigureBuilder).IsAssignableFrom(t) && !t.IsAbstract);
+
+                    foreach (var type in builderTypes)
+                    {
+                        if (Activator.CreateInstance(type) is IFigureBuilder builder)
+                        {
+                            int newId = builders.Count;
+                            builders[newId] = builder;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    
+                    Debug.WriteLine($"Ошибка загрузки {Path.GetFileName(dll)}: {ex.Message}");
+                }
+            }
+        }
+
 
         public void HandleMouseDown(Point start, ref Shape[] shapes, Color lineColor, Color backColor, int penWidth)
         {
