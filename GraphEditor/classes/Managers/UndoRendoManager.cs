@@ -7,7 +7,7 @@ namespace Lab1.classes.Managers
     class UndoRendoManager
     {
         private List<Shape> stack = new List<Shape>();
-        private Shape[] shapes = Array.Empty<Shape>();
+        private Shape[] shapes = Array.Empty<Shape>(); 
 
         public Shape[] Shapes => shapes;
         public void ClearShapes()

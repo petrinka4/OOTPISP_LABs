@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             pictureBox = new PictureBox();
-            drawButton = new Button();
             clearButton = new Button();
             buttonLine = new Button();
             buttonRectangle = new Button();
@@ -60,18 +59,6 @@
             pictureBox.MouseDown += pictureBox_MouseDown;
             pictureBox.MouseMove += pictureBox_MouseMove;
             pictureBox.MouseUp += pictureBox_MouseUp;
-            // 
-            // drawButton
-            // 
-            drawButton.Font = new Font("Times New Roman", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
-            drawButton.Location = new Point(145, 459);
-            drawButton.Margin = new Padding(2);
-            drawButton.Name = "drawButton";
-            drawButton.Size = new Size(151, 57);
-            drawButton.TabIndex = 1;
-            drawButton.Text = "Print";
-            drawButton.UseVisualStyleBackColor = true;
-            drawButton.Click += drawButton_Click;
             // 
             // clearButton
             // 
@@ -202,7 +189,6 @@
             Controls.Add(buttonRectangle);
             Controls.Add(buttonLine);
             Controls.Add(clearButton);
-            Controls.Add(drawButton);
             Controls.Add(pictureBox);
             FormBorderStyle = FormBorderStyle.FixedToolWindow;
             Margin = new Padding(2);
@@ -218,7 +204,6 @@
         #endregion
 
         private PictureBox pictureBox;
-        private Button drawButton;
         private Button clearButton;
         private Button buttonLine;
         private Button buttonRectangle;
