@@ -20,7 +20,7 @@ namespace Lab1.classes.Builders
             shapes[^1] = new Line(color, width, start, start);
         }
 
-        public void OnMouseMove(Point current, ref Shape[] shapes)
+        public void OnMouseMove(Point current, ref Shape[] shapes, bool isDrawing)
         {
             shapes[^1] = new Line(color, width, start, current);
         }

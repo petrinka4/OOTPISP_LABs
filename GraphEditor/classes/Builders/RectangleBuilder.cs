@@ -21,7 +21,7 @@ namespace Lab1.classes.Builders
             shapes[^1] = new RectangleF(lineColor, backColor, penWidth, start, 0, 0);
         }
 
-        public void OnMouseMove(Point current, ref Shape[] shapes)
+        public void OnMouseMove(Point current, ref Shape[] shapes, bool isDrawing)
         {
             Point topLeft = new Point(Math.Min(start.X, current.X), Math.Min(start.Y, current.Y));
             int width = Math.Abs(current.X - start.X);
@@ -32,7 +32,7 @@ namespace Lab1.classes.Builders
 
         public void OnMouseUp(Point end, ref Shape[] shapes)
         {
-            OnMouseMove(end, ref shapes);
+            OnMouseMove(end, ref shapes,false);
         }
         
     }

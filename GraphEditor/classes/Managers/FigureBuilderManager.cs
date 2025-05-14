@@ -1,40 +1,42 @@
 ﻿using System;
-using System.Drawing;
 using System.Collections.Generic;
-using Lab1.classes.Builders;
-using Lab1.classes.Builders.Interfaces;
+using System.Drawing;
+using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Diagnostics;
+using Lab1.classes.Builders.Interfaces;
 
 namespace Lab1.classes.Managers
 {
     public class FigureBuilderManager
     {
-        private readonly Dictionary<int, IFigureBuilder> builders;
+        private readonly Dictionary<string, IFigureBuilder> builders;
         private IFigureBuilder currentBuilder;
-
 
         public FigureBuilderManager()
         {
-            builders = new Dictionary<int, IFigureBuilder>();
-            
+            builders = new Dictionary<string, IFigureBuilder>();
         }
+
         public int GetDictSize()
         {
-            return builders.Count();
+            return builders.Count;
         }
+
         public IFigureBuilder GetBuilder()
         {
             return currentBuilder;
         }
-        public void RegisterBuilder(int index, IFigureBuilder builder)
+
+        public void RegisterBuilder(string key, IFigureBuilder builder)
         {
-            builders[index] = builder;
+            builders[key] = builder;
         }
 
-        public void SetFigure(int index)
+        public void SetFigure(string key)
         {
-            currentBuilder = builders.TryGetValue(index, out var builder) ? builder : null;
+            currentBuilder = builders.TryGetValue(key, out var builder) ? builder : null;
         }
 
         public void LoadAllPlugins()
@@ -43,9 +45,12 @@ namespace Lab1.classes.Managers
 
             if (!Directory.Exists(pluginsPath))
             {
-                Directory.CreateDirectory(pluginsPath); // Создаем папку, если её нет
+                Directory.CreateDirectory(pluginsPath);
                 return;
             }
+
+            // Determine starting index for new plugin keys
+            int nextIndex = builders.Count + 1;
 
             foreach (var dll in Directory.GetFiles(pluginsPath, "*.dll"))
             {
@@ -59,28 +64,27 @@ namespace Lab1.classes.Managers
                     {
                         if (Activator.CreateInstance(type) is IFigureBuilder builder)
                         {
-                            int newId = builders.Count;
-                            builders[newId] = builder;
+                            string key = nextIndex.ToString();
+                            builders[key] = builder;
+                            nextIndex++;
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    
                     Debug.WriteLine($"Ошибка загрузки {Path.GetFileName(dll)}: {ex.Message}");
                 }
             }
         }
-
 
         public void HandleMouseDown(Point start, ref Shape[] shapes, Color lineColor, Color backColor, int penWidth)
         {
             currentBuilder?.OnMouseDown(start, ref shapes, lineColor, backColor, penWidth);
         }
 
-        public void HandleMouseMove(Point current, ref Shape[] shapes)
+        public void HandleMouseMove(Point current, ref Shape[] shapes, bool isDrawing)
         {
-            currentBuilder?.OnMouseMove(current, ref shapes);
+            currentBuilder?.OnMouseMove(current, ref shapes,isDrawing);
         }
 
         public void HandleMouseUp(Point end, ref Shape[] shapes)

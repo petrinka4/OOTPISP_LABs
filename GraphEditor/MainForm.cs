@@ -1,11 +1,14 @@
-﻿using Lab1.classes.Managers;
-using Lab1.classes.Builders;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
+using System.Linq;
 using System.Windows.Forms;
-using System.Reflection.PortableExecutable;
+using Lab1.classes.Builders;
 using Lab1.classes.Builders.Interfaces;
+using Lab1.classes.Managers;
+using Newtonsoft.Json.Linq;
+using Formatting = Newtonsoft.Json.Formatting;
 
 namespace Lab1
 {
@@ -13,14 +16,11 @@ namespace Lab1
     {
         private UndoRendoManager undoRedoManager = new UndoRendoManager();
         private FigureBuilderManager figureBuilderManager = new FigureBuilderManager();
-        private Dictionary<int, IFigureBuilder> figureBuilders;
-
+        private Shape[] shapes = new Shape[0];
+        public bool IsDrawing = false;
         public Color colorLine = Color.White;
         public Color colorBack = Color.White;
         public int penWidth = 10;
-
-        private Shape[] shapes = new Shape[0];
-        private bool IsDrawing = false;
 
         public MainForm()
         {
@@ -30,55 +30,22 @@ namespace Lab1
 
         private void InitializeBuilders()
         {
-            figureBuilderManager.RegisterBuilder(0, new LineBuilder());       
-            figureBuilderManager.RegisterBuilder(1, new RectangleBuilder());  
-            figureBuilderManager.RegisterBuilder(2, new EllipseBuilder());   
-            figureBuilderManager.RegisterBuilder(3, new PolygonBuilder());   
-            figureBuilderManager.RegisterBuilder(4, new BrLineBuilder());
+            figureBuilderManager.RegisterBuilder("Line", new LineBuilder());
+            figureBuilderManager.RegisterBuilder("RectangleF", new RectangleBuilder());
+            figureBuilderManager.RegisterBuilder("Ellipse", new EllipseBuilder());
+            figureBuilderManager.RegisterBuilder("Polygon", new PolygonBuilder());
+            figureBuilderManager.RegisterBuilder("BrokenLine", new BrLineBuilder());
             figureBuilderManager.LoadAllPlugins();
-            
-        }
-
-        private void drawButton_Click(object sender, EventArgs e)
-        {
-            pictureBox.Invalidate();
         }
 
         private void pictureBox_Paint(object sender, PaintEventArgs e)
         {
-            foreach (Shape shape in shapes)
-            {
+            foreach (var shape in shapes)
                 shape.Draw(e.Graphics);
-            }
         }
-
-        private void clearButton_Click(object sender, EventArgs e)
-        {
-            shapes = Array.Empty<Shape>();
-            
-            undoRedoManager.ClearShapes();
-            pictureBox.Invalidate();
-        }
-
-        private void buttonLine_Click(object sender, EventArgs e) => figureBuilderManager.SetFigure(0);
-        private void buttonRectangle_Click(object sender, EventArgs e) => figureBuilderManager.SetFigure(1);
-        private void buttonEllipse_Click(object sender, EventArgs e) => figureBuilderManager.SetFigure(2);
-        private void buttonPolygon_Click(object sender, EventArgs e) { figureBuilderManager.SetFigure(3);
-            IFigureBuilder activeBuilder = figureBuilderManager.GetBuilder();
-            activeBuilder.isCreated=false;
-            
-        }
-        private void buttonBrLine_Click(object sender, EventArgs e) { figureBuilderManager.SetFigure(4);
-            IFigureBuilder activeBuilder = figureBuilderManager.GetBuilder();
-            activeBuilder.isCreated = false;
-            
-        }
-
-        
 
         private void pictureBox_MouseDown(object sender, MouseEventArgs e)
         {
-                   
             IsDrawing = true;
             undoRedoManager.ClearShapes();
             figureBuilderManager.HandleMouseDown(new Point(e.X, e.Y), ref shapes, colorLine, colorBack, penWidth);
@@ -87,47 +54,42 @@ namespace Lab1
 
         private void pictureBox_MouseMove(object sender, MouseEventArgs e)
         {
-            if (IsDrawing)
-            {
-                figureBuilderManager.HandleMouseMove(new Point(e.X, e.Y), ref shapes);
-                pictureBox.Invalidate();
-            }
+            if (!IsDrawing) return;
+            figureBuilderManager.HandleMouseMove(new Point(e.X, e.Y), ref shapes, IsDrawing);
+            pictureBox.Invalidate();
         }
 
         private void pictureBox_MouseUp(object sender, MouseEventArgs e)
         {
-            if (IsDrawing)
-            {
-                IsDrawing = false;
-                figureBuilderManager.HandleMouseUp(new Point(e.X, e.Y), ref shapes);
-                pictureBox.Invalidate();
-            }
+            if (!IsDrawing) return;
+            IsDrawing = false;
+            figureBuilderManager.HandleMouseUp(new Point(e.X, e.Y), ref shapes);
+            pictureBox.Invalidate();
         }
 
-        private void buttonColor_Click(object sender, EventArgs e)
+        private void clearButton_Click(object sender, EventArgs e)
         {
-            ColorDialog dlg = new ColorDialog { AllowFullOpen = false, ShowHelp = true, Color = colorLine };
-            if (dlg.ShowDialog() == DialogResult.OK)
-            {
-                colorLine = dlg.Color;
-                buttonColorLine.BackColor = dlg.Color;
-            }
+            shapes = Array.Empty<Shape>();
+            undoRedoManager.ClearShapes();
+            pictureBox.Invalidate();
         }
 
-        private void buttonColorBack_Click(object sender, EventArgs e)
+        private void buttonLine_Click(object sender, EventArgs e) => figureBuilderManager.SetFigure("Line");
+        private void buttonRectangle_Click(object sender, EventArgs e) => figureBuilderManager.SetFigure("RectangleF");
+        private void buttonEllipse_Click(object sender, EventArgs e) => figureBuilderManager.SetFigure("Ellipse");
+        private void buttonPolygon_Click(object sender, EventArgs e)
         {
-            ColorDialog dlg = new ColorDialog { AllowFullOpen = false, ShowHelp = true, Color = colorBack };
-            if (dlg.ShowDialog() == DialogResult.OK)
-            {
-                colorBack = dlg.Color;
-                buttonColorBack.BackColor = dlg.Color;
-            }
+            figureBuilderManager.SetFigure("Polygon");
+            figureBuilderManager.GetBuilder().isCreated = false;
         }
 
-        private void trackBarWidth_Scroll(object sender, EventArgs e)
+        private void buttonBrLine_Click(object sender, EventArgs e)
         {
-            penWidth = trackBarWidth.Value;
+            figureBuilderManager.SetFigure("BrokenLine");
+            figureBuilderManager.GetBuilder().isCreated = false;
         }
+
+        private void drawButton_Click(object sender, EventArgs e) => pictureBox.Invalidate();
 
         private void buttonCtrlZ_Click(object sender, EventArgs e)
         {
@@ -142,6 +104,114 @@ namespace Lab1
             undoRedoManager.SetShapes(shapes);
             undoRedoManager.Redo();
             shapes = undoRedoManager.Shapes;
+            pictureBox.Invalidate();
+        }
+
+        private void buttonColor_Click(object sender, EventArgs e)
+        {
+            var dlg = new ColorDialog { Color = colorLine };
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                colorLine = dlg.Color;
+                buttonColorLine.BackColor = dlg.Color;
+            }
+        }
+
+        private void buttonColorBack_Click(object sender, EventArgs e)
+        {
+            var dlg = new ColorDialog { Color = colorBack };
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                colorBack = dlg.Color;
+                buttonColorBack.BackColor = dlg.Color;
+            }
+        }
+
+        private void trackBarWidth_Scroll(object sender, EventArgs e) => penWidth = trackBarWidth.Value;
+
+        private void sToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            saveFileDialog1.Filter = "JSON-файлы (*.json)|*.json";
+            saveFileDialog1.Title = "Сохранить фигуры";
+            if (saveFileDialog1.ShowDialog() != DialogResult.OK) return;
+
+            var arr = new JArray();
+            foreach (var s in shapes)
+            {
+                var o = new JObject
+                {
+                    ["Type"] = s.GetType().Name,
+                    ["penColor"] = s.penColor.ToArgb(),
+                    ["brushColor"] = s.brushColor.ToArgb(),
+                    ["penWidth"] = s.penWidth
+                };
+                var pts = new JArray();
+                switch (s)
+                {
+                    case Line l:
+                        pts.Add(new JObject { ["X"] = l.position.X, ["Y"] = l.position.Y });
+                        pts.Add(new JObject { ["X"] = l.endPos.X, ["Y"] = l.endPos.Y });
+                        break;
+                    case RectangleF r:
+                        pts.Add(new JObject { ["X"] = r.position.X, ["Y"] = r.position.Y });
+                        pts.Add(new JObject { ["X"] = r.position.X + r.width, ["Y"] = r.position.Y + r.height });
+                        break;
+                    case Ellipse E:
+                        pts.Add(new JObject { ["X"] = E.position.X, ["Y"] = E.position.Y });
+                        pts.Add(new JObject { ["X"] = E.position.X + E.width, ["Y"] = E.position.Y + E.height });
+                        break;
+                    case Polygon p:
+                        foreach (var pt in p.Points)
+                            pts.Add(new JObject { ["X"] = pt.X, ["Y"] = pt.Y });
+                        break;
+                    case BrokenLine b:
+                        foreach (var pt in b.Points)
+                            pts.Add(new JObject { ["X"] = pt.X, ["Y"] = pt.Y });
+                        break;
+                }
+                o["Points"] = pts;
+                arr.Add(o);
+            }
+            File.WriteAllText(saveFileDialog1.FileName, arr.ToString(Formatting.Indented));
+        }
+
+        private void lOADToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.Filter = "JSON‑файлы (*.json)|*.json";
+            openFileDialog1.Title = "Загрузить фигуры";
+            if (openFileDialog1.ShowDialog() != DialogResult.OK) return;
+
+            var arr = JArray.Parse(File.ReadAllText(openFileDialog1.FileName));
+            shapes = Array.Empty<Shape>();
+
+            foreach (JObject o in arr)
+            {
+                string typeName = (string)o["Type"];
+                Color lineColor = Color.FromArgb((int)o["penColor"]);
+                Color backColor = Color.FromArgb((int)o["brushColor"]);
+                int pw = (int)o["penWidth"];
+                var ptsToken = (JArray)o["Points"];
+
+                figureBuilderManager.SetFigure(typeName);
+                var builder = figureBuilderManager.GetBuilder();
+                builder.isCreated = false;
+
+                var first = (JObject)ptsToken[0];
+                var start = new Point((int)first["X"], (int)first["Y"]);
+                figureBuilderManager.HandleMouseDown(start, ref shapes, lineColor, backColor, pw);
+
+                for (int i = 1; i < ptsToken.Count; i++)
+                {
+                    var token = (JObject)ptsToken[i];
+                    var pt = new Point((int)token["X"], (int)token["Y"]);
+                    figureBuilderManager.HandleMouseMove(pt, ref shapes, false);
+                }
+
+                var last = (JObject)ptsToken.Last;
+                var end = new Point((int)last["X"], (int)last["Y"]);
+                figureBuilderManager.HandleMouseUp(end, ref shapes);
+            }
+
             pictureBox.Invalidate();
         }
     }

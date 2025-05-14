@@ -22,12 +22,15 @@ namespace Lab1.classes.Builders
             
         }
 
-        public void OnMouseMove(Point current, ref Shape[] shapes)
+        public void OnMouseMove(Point current, ref Shape[] shapes, bool isDrawing)
         {
        
             if (brokenLine != null)
             {
-                brokenLine.DeleteLast();
+                if (isDrawing)
+                {
+                    brokenLine.DeleteLast();
+                }
                 brokenLine.AddPoint(current);
             }
         }

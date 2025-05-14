@@ -23,13 +23,16 @@ namespace Lab1.classes.Builders
             }
         }
 
-        public void OnMouseMove(Point current, ref Shape[] shapes)
+        public void OnMouseMove(Point current, ref Shape[] shapes, bool isDrawing)
         {
            
             if (polygon != null)
             {
-                polygon.DeleteLast();
-                polygon.AddPoint(current);
+                if (isDrawing)
+                {
+                    polygon.DeleteLast();
+                }
+                    polygon.AddPoint(current);
             }
         }
 
