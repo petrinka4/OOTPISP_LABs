@@ -194,6 +194,13 @@ namespace Lab1
                 int pw = (int)o["penWidth"];
                 var ptsToken = (JArray)o["Points"];
 
+                
+                if (!figureBuilderManager.builders.ContainsKey(typeName))
+                {
+                    MessageBox.Show($"Неизвестный тип фигуры: {typeName}", "Ошибка загрузки", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    continue; 
+                }
+
                 figureBuilderManager.SetFigure(typeName);
                 var builder = figureBuilderManager.GetBuilder();
                 try
@@ -217,6 +224,7 @@ namespace Lab1
                 var end = new Point((int)last["X"], (int)last["Y"]);
                 figureBuilderManager.HandleMouseUp(end, ref shapes);
             }
+
 
             pictureBox.Invalidate();
         }
