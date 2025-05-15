@@ -268,8 +268,8 @@
         private MenuStrip menuStrip1;
         private ToolStripMenuItem sToolStripMenuItem;
         private ToolStripMenuItem lOADToolStripMenuItem;
-        private OpenFileDialog openFileDialog1;
-        private SaveFileDialog saveFileDialog1;
+        public OpenFileDialog openFileDialog1;
+        public SaveFileDialog saveFileDialog1;
         private ComboBox comboBoxPlugins;
     }
 }
