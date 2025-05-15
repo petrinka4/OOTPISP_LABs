@@ -35,14 +35,29 @@ namespace Lab1
             figureBuilderManager.RegisterBuilder("Ellipse", new EllipseBuilder());
             figureBuilderManager.RegisterBuilder("Polygon", new PolygonBuilder());
             figureBuilderManager.RegisterBuilder("BrokenLine", new BrLineBuilder());
-            
+
             figureBuilderManager.LoadAllPlugins();
+            LoadButtons(figureBuilderManager);
         }
 
         private void pictureBox_Paint(object sender, PaintEventArgs e)
         {
             foreach (var shape in shapes)
                 shape.Draw(e.Graphics);
+        }
+        private void LoadButtons(FigureBuilderManager figureBuilderManager)
+        {
+
+            comboBoxPlugins.Items.Clear();
+
+
+            var pluginKeys = figureBuilderManager.builders.Keys.Skip(5);
+
+
+            foreach (var key in pluginKeys)
+            {
+                comboBoxPlugins.Items.Add(key);
+            }
         }
 
         private void pictureBox_MouseDown(object sender, MouseEventArgs e)
@@ -149,7 +164,7 @@ namespace Lab1
 
                 var pts = new JArray();
 
-                
+
                 foreach (var pt in s.points)
                 {
                     pts.Add(new JObject { ["X"] = pt.X, ["Y"] = pt.Y });
@@ -206,12 +221,15 @@ namespace Lab1
             pictureBox.Invalidate();
         }
 
-        private void buttonPlug_Click(object sender, EventArgs e)
-        {
-            string key = figureBuilderManager.builders.Keys.ElementAt(5);
+        
 
-            
-            figureBuilderManager.SetFigure(key);
+        private void comboBoxPlugins_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string selectedKey = comboBoxPlugins.SelectedItem as string;
+            if (!string.IsNullOrEmpty(selectedKey))
+            {
+                figureBuilderManager.SetFigure(selectedKey);
+            }
         }
     }
 }
