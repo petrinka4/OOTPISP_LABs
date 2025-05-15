@@ -46,6 +46,7 @@
             lOADToolStripMenuItem = new ToolStripMenuItem();
             openFileDialog1 = new OpenFileDialog();
             saveFileDialog1 = new SaveFileDialog();
+            buttonPlug = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)trackBarWidth).BeginInit();
             menuStrip1.SuspendLayout();
@@ -207,11 +208,22 @@
             // 
             openFileDialog1.FileName = "openFileDialog1";
             // 
+            // buttonPlug
+            // 
+            buttonPlug.Location = new Point(529, 52);
+            buttonPlug.Name = "buttonPlug";
+            buttonPlug.Size = new Size(94, 29);
+            buttonPlug.TabIndex = 15;
+            buttonPlug.Text = "TROPPI";
+            buttonPlug.UseVisualStyleBackColor = true;
+            buttonPlug.Click += buttonPlug_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(972, 543);
+            Controls.Add(buttonPlug);
             Controls.Add(buttonCtrlY);
             Controls.Add(buttonCtrlZ);
             Controls.Add(trackBarWidth);
@@ -259,5 +271,6 @@
         private ToolStripMenuItem lOADToolStripMenuItem;
         private OpenFileDialog openFileDialog1;
         private SaveFileDialog saveFileDialog1;
+        private Button buttonPlug;
     }
 }

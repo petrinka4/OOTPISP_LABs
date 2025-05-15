@@ -12,28 +12,28 @@ namespace Lab1
         
         public void AddPoint(Point point)
         {
-            var pointList = Points.ToList(); 
+            var pointList = points.ToList(); 
             pointList.Add(point);
-            Points = pointList.ToArray();
+            points = pointList.ToArray();
         }
         
         public void DeleteLast()
         {
           
-            if (Points.Length > 1)
+            if (points.Length > 1)
             {
-                var pointList = Points.ToList(); 
+                var pointList = points.ToList(); 
                 pointList.RemoveAt(pointList.Count - 1);  
-                Points = pointList.ToArray();  
+                points = pointList.ToArray();  
             }
         }
         public void AddFirst()
         {
-            if (Points.Length > 0)
+            if (points.Length > 0)
             {
-                var pointList = Points.ToList(); 
+                var pointList = points.ToList(); 
                 pointList.Add(pointList[0]);    
-                Points = pointList.ToArray();    
+                points = pointList.ToArray();    
             }
         }
 
@@ -41,15 +41,15 @@ namespace Lab1
         public override void Draw(Graphics g)
         {
            
-            if (Points.Length >= 3)
+            if (points.Length >= 3)
             {
                 
                 using (var brush = new SolidBrush(brushColor))
                 using (var pen = new Pen(penColor, penWidth))
                 {
                     
-                    g.FillPolygon(brush, Points);
-                    g.DrawPolygon(pen, Points);
+                    g.FillPolygon(brush, points);
+                    g.DrawPolygon(pen, points);
                 }
             }
         }

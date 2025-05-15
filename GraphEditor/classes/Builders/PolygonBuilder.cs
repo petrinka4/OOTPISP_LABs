@@ -11,7 +11,7 @@ namespace Lab1.classes.Builders
         
         private Polygon polygon;
 
-        public void OnMouseDown(Point start, ref Shape[] shapes, Color lineColor, Color backColor, int penWidth)
+        public void OnMouseDown(Point start, ref CommonArray[] shapes, Color lineColor, Color backColor, int penWidth)
         {
            
             if (!isCreated)
@@ -23,7 +23,7 @@ namespace Lab1.classes.Builders
             }
         }
 
-        public void OnMouseMove(Point current, ref Shape[] shapes, bool isDrawing)
+        public void OnMouseMove(Point current, ref CommonArray[] shapes, bool isDrawing)
         {
            
             if (polygon != null)
@@ -36,7 +36,7 @@ namespace Lab1.classes.Builders
             }
         }
 
-        public void OnMouseUp(Point end, ref Shape[] shapes)
+        public void OnMouseUp(Point end, ref CommonArray[] shapes)
         {
             
             if (polygon != null)

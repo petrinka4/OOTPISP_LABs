@@ -16,7 +16,7 @@ namespace Lab1
     {
         private UndoRendoManager undoRedoManager = new UndoRendoManager();
         private FigureBuilderManager figureBuilderManager = new FigureBuilderManager();
-        private Shape[] shapes = new Shape[0];
+        private CommonArray[] shapes = new CommonArray[0];
         public bool IsDrawing = false;
         public Color colorLine = Color.White;
         public Color colorBack = Color.White;
@@ -35,6 +35,7 @@ namespace Lab1
             figureBuilderManager.RegisterBuilder("Ellipse", new EllipseBuilder());
             figureBuilderManager.RegisterBuilder("Polygon", new PolygonBuilder());
             figureBuilderManager.RegisterBuilder("BrokenLine", new BrLineBuilder());
+            
             figureBuilderManager.LoadAllPlugins();
         }
 
@@ -69,7 +70,7 @@ namespace Lab1
 
         private void clearButton_Click(object sender, EventArgs e)
         {
-            shapes = Array.Empty<Shape>();
+            shapes = Array.Empty<CommonArray>();
             undoRedoManager.ClearShapes();
             pictureBox.Invalidate();
         }
@@ -145,35 +146,21 @@ namespace Lab1
                     ["brushColor"] = s.brushColor.ToArgb(),
                     ["penWidth"] = s.penWidth
                 };
+
                 var pts = new JArray();
-                switch (s)
+
+                
+                foreach (var pt in s.points)
                 {
-                    case Line l:
-                        pts.Add(new JObject { ["X"] = l.position.X, ["Y"] = l.position.Y });
-                        pts.Add(new JObject { ["X"] = l.endPos.X, ["Y"] = l.endPos.Y });
-                        break;
-                    case RectangleF r:
-                        pts.Add(new JObject { ["X"] = r.position.X, ["Y"] = r.position.Y });
-                        pts.Add(new JObject { ["X"] = r.position.X + r.width, ["Y"] = r.position.Y + r.height });
-                        break;
-                    case Ellipse E:
-                        pts.Add(new JObject { ["X"] = E.position.X, ["Y"] = E.position.Y });
-                        pts.Add(new JObject { ["X"] = E.position.X + E.width, ["Y"] = E.position.Y + E.height });
-                        break;
-                    case Polygon p:
-                        foreach (var pt in p.Points)
-                            pts.Add(new JObject { ["X"] = pt.X, ["Y"] = pt.Y });
-                        break;
-                    case BrokenLine b:
-                        foreach (var pt in b.Points)
-                            pts.Add(new JObject { ["X"] = pt.X, ["Y"] = pt.Y });
-                        break;
+                    pts.Add(new JObject { ["X"] = pt.X, ["Y"] = pt.Y });
                 }
+
                 o["Points"] = pts;
                 arr.Add(o);
             }
             File.WriteAllText(saveFileDialog1.FileName, arr.ToString(Formatting.Indented));
         }
+
 
         private void lOADToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -182,7 +169,7 @@ namespace Lab1
             if (openFileDialog1.ShowDialog() != DialogResult.OK) return;
 
             var arr = JArray.Parse(File.ReadAllText(openFileDialog1.FileName));
-            shapes = Array.Empty<Shape>();
+            shapes = Array.Empty<CommonArray>();
 
             foreach (JObject o in arr)
             {
@@ -194,7 +181,11 @@ namespace Lab1
 
                 figureBuilderManager.SetFigure(typeName);
                 var builder = figureBuilderManager.GetBuilder();
-                builder.isCreated = false;
+                try
+                {
+                    builder.isCreated = false;
+                }
+                catch { }
 
                 var first = (JObject)ptsToken[0];
                 var start = new Point((int)first["X"], (int)first["Y"]);
@@ -213,6 +204,14 @@ namespace Lab1
             }
 
             pictureBox.Invalidate();
+        }
+
+        private void buttonPlug_Click(object sender, EventArgs e)
+        {
+            string key = figureBuilderManager.builders.Keys.ElementAt(5);
+
+            
+            figureBuilderManager.SetFigure(key);
         }
     }
 }

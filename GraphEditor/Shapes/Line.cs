@@ -3,23 +3,22 @@ using System.Drawing;
 
 namespace Lab1
 {
-    public class Line : Shape
+    public class Line : CommonArray
     {
-        public Point endPos { get; set; }
+        
 
-        public Line(Color penColor, int penWidth, Point start, Point end)
+        public Line(Color penColor, Color brushColor, int penWidth, Point[] points)
+           : base(penColor, brushColor, penWidth, points)
         {
-            this.penColor = penColor;
-            this.penWidth = penWidth;
-            this.position = start;
-            this.endPos = end;
+            if (points == null || points.Length != 2)
+                throw new ArgumentException("Line должен содержать ровно 2 точки");
         }
 
         public override void Draw(Graphics g)
         {
             using (var pen = new Pen(penColor, penWidth))
             {
-                g.DrawLine(pen, position, endPos);
+                g.DrawLine(pen, points[0], points[1]);
             }
         }
     }

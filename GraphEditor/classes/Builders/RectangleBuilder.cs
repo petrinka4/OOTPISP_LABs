@@ -11,29 +11,24 @@ namespace Lab1.classes.Builders
         private Color lineColor, fillColor;
         private int penWidth;
 
-        public void OnMouseDown(Point start, ref Shape[] shapes, Color lineColor, Color backColor, int penWidth)
+        public void OnMouseDown(Point start, ref CommonArray[] shapes, Color lineColor, Color backColor, int penWidth)
         {
             this.start = start;
             this.lineColor = lineColor;
             fillColor = backColor;
             this.penWidth = penWidth;
             Array.Resize(ref shapes, shapes.Length + 1);
-            shapes[^1] = new RectangleF(lineColor, backColor, penWidth, start, 0, 0);
+            shapes[^1] = new RectangleF(lineColor, fillColor, penWidth, new Point[] { start, start });
         }
 
-        public void OnMouseMove(Point current, ref Shape[] shapes, bool isDrawing)
+        public void OnMouseMove(Point current, ref CommonArray[] shapes, bool isDrawing)
         {
-            Point topLeft = new Point(Math.Min(start.X, current.X), Math.Min(start.Y, current.Y));
-            int width = Math.Abs(current.X - start.X);
-            int height = Math.Abs(current.Y - start.Y);
-
-            shapes[^1] = new RectangleF(lineColor, fillColor, penWidth, topLeft, width, height);
+            shapes[^1] = new RectangleF(lineColor, fillColor, penWidth, new Point[] { start, current });
         }
 
-        public void OnMouseUp(Point end, ref Shape[] shapes)
+        public void OnMouseUp(Point end, ref CommonArray[] shapes)
         {
-            OnMouseMove(end, ref shapes,false);
+            shapes[^1] = new RectangleF(lineColor, fillColor, penWidth, new Point[] { start, end });
         }
-        
     }
 }

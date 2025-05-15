@@ -11,26 +11,26 @@ namespace Lab1
        
         public void AddPoint(Point point)
         {
-            var pointList = Points.ToList(); 
+            var pointList = points.ToList(); 
             pointList.Add(point);
-            Points = pointList.ToArray(); 
+            points = pointList.ToArray(); 
         }
 
         public void DeleteLast()
         {
-            var pointList = Points.ToList();
+            var pointList = points.ToList();
             pointList.RemoveAt(pointList.Count() - 1);
-            Points = pointList.ToArray();
+            points = pointList.ToArray();
         }
 
         public override void Draw(Graphics g)
         {
           
-            if (Points.Length >= 2)
+            if (points.Length >= 2)
             {
                 using (var pen = new Pen(penColor, penWidth))
                 {
-                    g.DrawLines(pen, Points);
+                    g.DrawLines(pen, points);
                 }
             }
         }

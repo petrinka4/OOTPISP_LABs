@@ -6,16 +6,16 @@ namespace Lab1.classes.Managers
 {
     class UndoRendoManager
     {
-        private List<Shape> stack = new List<Shape>();
-        private Shape[] shapes = Array.Empty<Shape>(); 
+        private List<CommonArray> stack = new List<CommonArray>();
+        private CommonArray[] shapes = Array.Empty<CommonArray>(); 
 
-        public Shape[] Shapes => shapes;
+        public CommonArray[] Shapes => shapes;
         public void ClearShapes()
         {
             stack.Clear();
-            shapes = Array.Empty<Shape>();
+            shapes = Array.Empty<CommonArray>();
         }
-        public void SetShapes(Shape[] newShapes)
+        public void SetShapes(CommonArray[] newShapes)
         {
             shapes = newShapes;
         }
@@ -33,7 +33,7 @@ namespace Lab1.classes.Managers
         {
             if (stack.Count > 0)
             {
-                Shape lastDeleted = stack[0];
+                CommonArray lastDeleted = stack[0];
                 stack.RemoveAt(0);
                 Array.Resize(ref shapes, shapes.Length + 1);
                 shapes[^1] = lastDeleted;

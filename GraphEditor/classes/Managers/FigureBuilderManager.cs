@@ -11,7 +11,7 @@ namespace Lab1.classes.Managers
 {
     public class FigureBuilderManager
     {
-        private readonly Dictionary<string, IFigureBuilder> builders;
+        public  Dictionary<string, IFigureBuilder> builders { get;  }
         private IFigureBuilder currentBuilder;
 
         public FigureBuilderManager()
@@ -49,7 +49,7 @@ namespace Lab1.classes.Managers
                 return;
             }
 
-            // Determine starting index for new plugin keys
+            
             int nextIndex = builders.Count + 1;
 
             foreach (var dll in Directory.GetFiles(pluginsPath, "*.dll"))
@@ -64,9 +64,14 @@ namespace Lab1.classes.Managers
                     {
                         if (Activator.CreateInstance(type) is IFigureBuilder builder)
                         {
-                            string key = nextIndex.ToString();
-                            builders[key] = builder;
-                            nextIndex++;
+                            
+                            string key = type.Name.Replace("Builder", "");
+
+                           
+                            if (!builders.ContainsKey(key))
+                                builders[key] = builder;
+                            else
+                                Debug.WriteLine($"Билдер с ключом {key} уже зарегистрирован.");
                         }
                     }
                 }
@@ -75,19 +80,21 @@ namespace Lab1.classes.Managers
                     Debug.WriteLine($"Ошибка загрузки {Path.GetFileName(dll)}: {ex.Message}");
                 }
             }
-        }
 
-        public void HandleMouseDown(Point start, ref Shape[] shapes, Color lineColor, Color backColor, int penWidth)
+        }
+        
+
+        public void HandleMouseDown(Point start, ref CommonArray[] shapes, Color lineColor, Color backColor, int penWidth)
         {
             currentBuilder?.OnMouseDown(start, ref shapes, lineColor, backColor, penWidth);
         }
 
-        public void HandleMouseMove(Point current, ref Shape[] shapes, bool isDrawing)
+        public void HandleMouseMove(Point current, ref CommonArray[] shapes, bool isDrawing)
         {
             currentBuilder?.OnMouseMove(current, ref shapes,isDrawing);
         }
 
-        public void HandleMouseUp(Point end, ref Shape[] shapes)
+        public void HandleMouseUp(Point end, ref CommonArray[] shapes)
         {
             currentBuilder?.OnMouseUp(end, ref shapes);
         }
